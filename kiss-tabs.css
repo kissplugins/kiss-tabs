@@ -58,6 +58,9 @@
     transition: all 0.2s ease-in-out;
     font-size: 14px; /* Adjust size as needed */
 }
+.kiss-tab-nav-item i {
+    margin-right: 6px;
+}
 
 .kiss-tab-nav-item:hover {
     background-color: #e9e9e9;
