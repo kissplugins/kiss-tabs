@@ -116,9 +116,13 @@ After saving, you would copy the shortcode `[kiss-tabs id="your-post-id"]` and p
 
 ### Adding Icons to Tab Labels
 
-Use the **Tab Icon Class** field to add an icon before the tab title. Enter a Dashicons class like `dashicons dashicons-smiley` or a Font Awesome class such as `fas fa-chart-line`.
+Use the **Tab Icon Class** field to add an icon before the tab title. Enter a Dashicons class like `dashicons dashicons-smiley` or a Font Awesome class such as `fa-solid fa-chart-line`.
 
 ## Changelog
+
+#### 1.0.8
+
+  * Updated Font Awesome fallback to version 6.
 
 #### 1.0.6
 

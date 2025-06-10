@@ -3,7 +3,7 @@
  * Plugin Name:       KISS Tabs
  * Plugin URI:        https://kissplugins.com/
  * Description:       Creates a 'kiss_tabs' CPT to render tabbed content via a shortcode. Compatible with HTML, JS, and other shortcodes.
- * Version:           1.0.7
+ * Version:           1.0.8
  * Author:            KISS Plugins
  * Author URI:        https://kissplugins.com/
  * License:           GPL-2.0-or-later
@@ -11,6 +11,7 @@
  * Text Domain:       kiss-tabs
  *
  * Changelog:
+ * 1.0.8  - Updated Font Awesome fallback to version 6.
  * 1.0.7  - Updated changelog and added AGENTS.md with project instructions.
  * 1.0.6  - Added optional Tab Icon Class field and icon rendering before tab titles. Fallback
  *          loading for Dashicons and Font Awesome if not already enqueued.
@@ -35,7 +36,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class KISS_Tabs {
 
-    const VERSION     = '1.0.7';
+    const VERSION     = '1.0.8';
     const CPT_SLUG    = 'kiss_tabs';
     const SHORTCODE   = 'kiss-tabs';
     const PLUGIN_SLUG = 'kiss-tabs-plugin';
@@ -226,9 +227,9 @@ class KISS_Tabs {
             if ( ! wp_style_is( 'font-awesome', 'enqueued' ) && ! wp_style_is( 'font-awesome', 'registered' ) ) {
                 wp_enqueue_style(
                     'font-awesome',
-                    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css',
+                    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css',
                     [],
-                    '5.15.4'
+                    '6.5.1'
                 );
             }
 
