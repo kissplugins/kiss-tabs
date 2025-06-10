@@ -24,6 +24,7 @@ You create a "Tab Set" in the admin area, define up to four tabs with titles and
 * **Simple Shortcode:** Use a simple shortcode like `[kiss-tabs id="123"]` to embed your tabs anywhere.
 * **Responsive:** The tab layout is responsive and adapts to smaller screens for a good mobile experience.
 * **Lightweight:** Enqueues only one small CSS and one JS file, and only on pages where the shortcode is actually used.
+* **Icon Support:** Optionally display Dashicons or Font Awesome icons before each tab label.
 
 ## Installation
 
@@ -40,7 +41,7 @@ You create a "Tab Set" in the admin area, define up to four tabs with titles and
 
 2.  **Add Tab Content:**
     * On the edit screen, you will see a "Tab Content" section with four blocks.
-    * For each tab you want to display, fill in the **Tab Title** and the **Tab Content**.
+    * For each tab you want to display, fill in the **Tab Title**, **Tab Icon Class** (optional), and the **Tab Content**.
     * The content can be any text, HTML, or shortcode. If you leave a **Tab Title** field blank, that tab will not be rendered.
     * Click the **Publish** button to save.
 
@@ -113,7 +114,20 @@ Imagine you have created a "KISS Tab" post and are on its edit screen. Here is w
 
 After saving, you would copy the shortcode `[kiss-tabs id="your-post-id"]` and place it in a page. The result would be a three-tab widget displaying your graphs, perfectly organized.
 
+### Adding Icons to Tab Labels
+
+Use the **Tab Icon Class** field to add an icon before the tab title. Enter a Dashicons class like `dashicons dashicons-smiley` or a Font Awesome class such as `fa-solid fa-chart-line`.
+
 ## Changelog
+
+#### 1.0.8
+
+  * Updated Font Awesome fallback to version 6.
+
+#### 1.0.6
+
+  * Added optional icon class field for each tab to support Dashicons or Font Awesome.
+  * Frontend now enqueues Dashicons and Font Awesome only if they are not already loaded.
 
 #### 1.0.1
 
