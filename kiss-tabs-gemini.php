@@ -3,7 +3,7 @@
  * Plugin Name:       KISS Tabs
  * Plugin URI:        https://kissplugins.com/
  * Description:       Creates a 'kiss_tabs' CPT to render tabbed content via a shortcode. Compatible with HTML, JS, and other shortcodes.
- * Version:           1.0.8
+ * Version:           1.0.5
  * Author:            KISS Plugins
  * Author URI:        https://kissplugins.com/
  * License:           GPL-2.0-or-later
@@ -11,10 +11,6 @@
  * Text Domain:       kiss-tabs
  *
  * Changelog:
- * 1.0.8  - Updated Font Awesome fallback to version 6.
- * 1.0.7  - Updated changelog and added AGENTS.md with project instructions.
- * 1.0.6  - Added optional Tab Icon Class field and icon rendering before tab titles. Fallback
- *          loading for Dashicons and Font Awesome if not already enqueued.
  * 1.0.5  - Moved kiss-tabs.css and kiss-tabs.js to the plugin root folder (out of /assets).
  * - Added comment regarding Font Awesome enqueueing if already loaded by theme/another plugin.
  * 1.0.4  - Changed edit icon from Dashicon to Font Awesome (fas fa-pencil-alt). Enqueued Font Awesome library.
@@ -36,7 +32,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class KISS_Tabs {
 
-    const VERSION     = '1.0.8';
+    const VERSION     = '1.0.5';
     const CPT_SLUG    = 'kiss_tabs';
     const SHORTCODE   = 'kiss-tabs';
     const PLUGIN_SLUG = 'kiss-tabs-plugin';
@@ -128,16 +124,8 @@ class KISS_Tabs {
         echo '<style>.kiss-tab-field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 20px; border: 1px solid #ccd0d4; padding: 15px; border-radius: 4px; background: #fdfdfd; } .kiss-tab-field label { font-weight: bold; } .kiss-tab-field input, .kiss-tab-field textarea { width: 100%; } .kiss-tab-field textarea { min-height: 150px; font-family: monospace; }</style>';
         for ( $i = 1; $i <= 4; $i++ ) {
             $title   = isset( $tabs_data[ $i ]['title'] ) ? esc_attr( $tabs_data[ $i ]['title'] ) : '';
-            $icon    = isset( $tabs_data[ $i ]['icon'] ) ? esc_attr( $tabs_data[ $i ]['icon'] ) : '';
             $content = isset( $tabs_data[ $i ]['content'] ) ? esc_textarea( $tabs_data[ $i ]['content'] ) : '';
-            echo '<div class="kiss-tab-field">'
-                . '<label for="kiss_tab_title_' . $i . '">' . sprintf( esc_html__( 'Tab %d Title', 'kiss-tabs' ), $i ) . '</label>'
-                . '<input type="text" id="kiss_tab_title_' . $i . '" name="kiss_tabs[' . $i . '][title]" value="' . $title . '" placeholder="' . esc_attr__( 'Enter tab title (leave blank to hide tab)', 'kiss-tabs' ) . '" />'
-                . '<label for="kiss_tab_icon_' . $i . '">' . sprintf( esc_html__( 'Tab %d Icon Class (optional)', 'kiss-tabs' ), $i ) . '</label>'
-                . '<input type="text" id="kiss_tab_icon_' . $i . '" name="kiss_tabs[' . $i . '][icon]" value="' . $icon . '" placeholder="dashicons dashicons-admin-generic or fas fa-star" />'
-                . '<label for="kiss_tab_content_' . $i . '">' . sprintf( esc_html__( 'Tab %d Content (HTML, Shortcode, JS)', 'kiss-tabs' ), $i ) . '</label>'
-                . '<textarea id="kiss_tab_content_' . $i . '" name="kiss_tabs[' . $i . '][content]">' . $content . '</textarea>'
-                . '</div>';
+            echo '<div class="kiss-tab-field"><label for="kiss_tab_title_' . $i . '">' . sprintf( esc_html__( 'Tab %d Title', 'kiss-tabs' ), $i ) . '</label><input type="text" id="kiss_tab_title_' . $i . '" name="kiss_tabs[' . $i . '][title]" value="' . $title . '" placeholder="' . esc_attr__( 'Enter tab title (leave blank to hide tab)', 'kiss-tabs' ) . '" /><label for="kiss_tab_content_' . $i . '">' . sprintf( esc_html__( 'Tab %d Content (HTML, Shortcode, JS)', 'kiss-tabs' ), $i ) . '</label><textarea id="kiss_tab_content_' . $i . '" name="kiss_tabs[' . $i . '][content]">' . $content . '</textarea></div>';
         }
         echo '<p class="description">' . esc_html__( 'Fill in titles/content. Empty titles hide tabs.', 'kiss-tabs' ) . '</p>';
     }
@@ -147,13 +135,7 @@ class KISS_Tabs {
         $sanitized_data = [];
         foreach ( $_POST['kiss_tabs'] as $index => $data ) {
             $index = intval($index);
-            if ( $index > 0 && $index <= 4 ) {
-                $sanitized_data[ $index ] = [
-                    'title'   => sanitize_text_field( $data['title'] ),
-                    'icon'    => sanitize_text_field( $data['icon'] ),
-                    'content' => trim( $data['content'] ),
-                ];
-            }
+            if ($index > 0 && $index <= 4) { $sanitized_data[$index] = ['title' => sanitize_text_field($data['title']), 'content' => trim($data['content'])]; }
         }
         update_post_meta( $post_id, '_kiss_tabs_data', $sanitized_data );
     }
@@ -185,13 +167,10 @@ class KISS_Tabs {
             <?php echo $edit_link_html; ?>
             <ul class="kiss-tabs-nav">
                 <?php $first = true; foreach ( $active_tabs as $original_db_index => $tab ) : $tab_render_index++; ?>
-                    <li class="kiss-tab-nav-item <?php echo $first ? 'active' : ''; ?>"
+                    <li class="kiss-tab-nav-item <?php echo $first ? 'active' : ''; ?>" 
                         data-tab-target="kiss-tab-content-<?php echo esc_attr($post_id) . '-' . esc_attr($original_db_index); ?>"
                         data-tab-index="<?php echo esc_attr($tab_render_index); ?>">
-                        <?php if ( ! empty( $tab['icon'] ) ) : ?>
-                            <i class="<?php echo esc_attr( $tab['icon'] ); ?>" aria-hidden="true"></i>
-                        <?php endif; ?>
-                        <span class="kiss-tab-title-text"><?php echo esc_html( $tab['title'] ); ?></span>
+                        <?php echo esc_html( $tab['title'] ); ?>
                     </li>
                 <?php $first = false; endforeach; ?>
             </ul>
@@ -220,18 +199,16 @@ class KISS_Tabs {
                 self::VERSION
             );
 
-            // Dashicons and Font Awesome fallback
-            if ( ! wp_style_is( 'dashicons', 'enqueued' ) && ! wp_style_is( 'dashicons', 'registered' ) ) {
-                wp_enqueue_style( 'dashicons' );
-            }
-            if ( ! wp_style_is( 'font-awesome', 'enqueued' ) && ! wp_style_is( 'font-awesome', 'registered' ) ) {
-                wp_enqueue_style(
-                    'font-awesome',
-                    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css',
-                    [],
-                    '6.5.1'
-                );
-            }
+            // Enqueue Font Awesome (from CDN)
+            // If your theme or another plugin already loads Font Awesome reliably,
+            // you might consider commenting out the next line to prevent duplicate loading.
+            // WordPress typically handles duplicate enqueues gracefully if the handle and src are identical.
+            wp_enqueue_style(
+                'font-awesome',
+                'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css',
+                [],
+                '5.15.4'
+            );
 
             wp_enqueue_script(
                 'kiss-tabs-script',
